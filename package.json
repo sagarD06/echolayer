@@ -1,6 +1,9 @@
 {
   "name": "echolayer",
   "private": true,
+  "prisma": {
+    "schema": "packages/database/prisma/schema.prisma"
+  },
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
@@ -9,6 +12,7 @@
     "check-types": "turbo run check-types"
   },
   "devDependencies": {
+    "@types/node": "^22.15.3",
     "prettier": "^3.7.4",
     "turbo": "^2.8.14",
     "typescript": "5.9.2"

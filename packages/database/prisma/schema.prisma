@@ -13,8 +13,9 @@ model Organisation {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  project Project[]
-  user    User[]
+  project  Project[]
+  user     User[]
+  feedback Feedback[]
 }
 
 model Project {
@@ -24,8 +25,9 @@ model Project {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
-  organisation Organisation @relation(fields: [organisationId], references: [id], onDelete: Cascade)
-  members ProjectMember[]
+  organisation Organisation    @relation(fields: [organisationId], references: [id], onDelete: Cascade)
+  members      ProjectMember[]
+  feedbacks    Feedback[]
 
   @@index([organisationId, createdAt])
 }
@@ -46,8 +48,8 @@ model User {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
-  organisation Organisation @relation(fields: [organisationId], references: [id], onDelete: Cascade)
-  projects ProjectMember[]
+  organisation Organisation    @relation(fields: [organisationId], references: [id], onDelete: Cascade)
+  projects     ProjectMember[]
 
   @@index([organisationId, createdAt])
 }
@@ -66,4 +68,38 @@ model ProjectMember {
   project Project @relation(fields: [projectId], references: [id])
 
   @@id([userId, projectId])
+}
+
+enum FeedbackStatus {
+  OPEN
+  PLANNED
+  IN_PROGRESS
+  COMPLETED
+}
+
+enum FeedbackType {
+  Idea
+  Suggestion
+  Problem
+  Question
+  Praise
+}
+
+model Feedback {
+  id             String         @id @default(cuid())
+  title          String
+  content        String
+  type           FeedbackType   @default(Praise)
+  status         FeedbackStatus @default(OPEN)
+  organisationId String
+  projectId      String
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  organisation Organisation @relation(fields: [organisationId], references: [id], onDelete: Cascade)
+  project      Project      @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId, createdAt])
+  @@index([organisationId])
+  @@index([projectId, type])
 }

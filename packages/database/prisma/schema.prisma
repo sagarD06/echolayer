@@ -16,6 +16,7 @@ model Organisation {
   project  Project[]
   user     User[]
   feedback Feedback[]
+  invites  Invite[]
 }
 
 model Project {
@@ -28,6 +29,7 @@ model Project {
   organisation Organisation    @relation(fields: [organisationId], references: [id], onDelete: Cascade)
   members      ProjectMember[]
   feedbacks    Feedback[]
+  invites      Invite[]
 
   @@index([organisationId, createdAt])
 }
@@ -43,6 +45,7 @@ model User {
   name           String
   email          String   @unique
   phone          String   @unique
+  password       String
   organisationId String
   role           Role
   createdAt      DateTime @default(now())
@@ -78,18 +81,18 @@ enum FeedbackStatus {
 }
 
 enum FeedbackType {
-  Idea
-  Suggestion
-  Problem
-  Question
-  Praise
+  IDEA
+  SUGGESTION
+  PROBLEM
+  QUESTION
+  PRAISE
 }
 
 model Feedback {
   id             String         @id @default(cuid())
   title          String
   content        String
-  type           FeedbackType   @default(Praise)
+  type           FeedbackType   @default(PRAISE)
   status         FeedbackStatus @default(OPEN)
   organisationId String
   projectId      String
@@ -102,4 +105,17 @@ model Feedback {
   @@index([projectId, createdAt])
   @@index([organisationId])
   @@index([projectId, type])
+}
+
+model Invite {
+  id             String      @id @default(cuid())
+  email          String
+  role           ProjectRole
+  projectId      String
+  organizationId String
+  token          String      @unique
+  expiresAt      DateTime
+
+  project      Project      @relation(fields: [projectId], references: [id])
+  organisation Organisation @relation(fields: [organizationId], references: [id])
 }

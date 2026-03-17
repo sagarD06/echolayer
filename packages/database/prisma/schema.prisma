@@ -41,18 +41,21 @@ enum Role {
 }
 
 model User {
-  id                         String    @id @default(cuid())
-  name                       String
-  email                      String    @unique
-  phone                      String    @unique
-  password                   String
-  organisationId             String
-  role                       Role
-  emailVerified              Boolean   @default(false)
-  verificationToken          String?   @unique
-  verificationTokenExpiresAt DateTime?
-  createdAt                  DateTime  @default(now())
-  updatedAt                  DateTime  @updatedAt
+  id                          String    @id @default(cuid())
+  name                        String
+  email                       String    @unique
+  phone                       String    @unique
+  password                    String
+  organisationId              String
+  role                        Role
+  emailVerified               Boolean   @default(false)
+  verificationToken           String?   @unique
+  verificationTokenExpiresAt  DateTime?
+  resetPasswordToken          String?   @unique
+  resetPasswordTokenExpiresAt DateTime?
+  lastLoginAt                 DateTime?
+  createdAt                   DateTime  @default(now())
+  updatedAt                   DateTime  @updatedAt
 
   organisation Organisation    @relation(fields: [organisationId], references: [id], onDelete: Cascade)
   projects     ProjectMember[]

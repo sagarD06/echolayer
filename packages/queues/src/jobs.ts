@@ -27,6 +27,7 @@ export interface SendWelcomeEmailPayload {
     userId: string
     email: string
     name: string
+    organizationName: string
 }
 
 /* Mapping of job names to their respective payload types */

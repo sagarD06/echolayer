@@ -11,3 +11,6 @@ export * from "./project/createProject.schema"
 
 //user schmema
 export * from "./user/createUser.schema"
+
+//auth schemas
+export * from "./auth/register.schema"

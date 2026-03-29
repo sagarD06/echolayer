@@ -3,7 +3,7 @@ import crypto from "crypto";
 
 import { prisma } from "@echolayer/database";
 import { getQueues, JobName } from "@echolayer/queues";
-import { CahceGet, CacheSet, CacheDelete, Cachekeys, TTL } from "@echolayer/cache";
+import { CacheDelete, Cachekeys } from "@echolayer/cache";
 import { type RegisterInputType, type LoginInputType, type ForgotPasswordInput, type ResetPasswordInput, UserRole } from "@echolayer/schema";
 
 import { signAccessTokeen, signRefreshToken, verifyRefreshToken, type TokenPayload } from "../../utils/jwt";
@@ -232,45 +232,6 @@ export async function resetPassword(input: ResetPasswordInput) {
     await CacheDelete(Cachekeys.user(user.id));
 
     return { message: "Password reset successful. You can now log in with your new password." };
-}
-
-export async function getCurrentUser(userId: string) {
-    const cachedUser = await CahceGet<{
-        id: string;
-        name: string;
-        email: string;
-        phone: string;
-        role: string;
-        organisationId: string;
-        emailVerified: boolean;
-        createdAt: Date;
-    }>(Cachekeys.user(userId));
-
-    if (cachedUser) {
-        return cachedUser;
-    }
-
-    const user = await prisma.user.findUnique({
-        where: { id: userId },
-        select: {
-            id: true,
-            name: true,
-            email: true,
-            phone: true,
-            role: true,
-            organisationId: true,
-            emailVerified: true,
-            createdAt: true
-        }
-    })
-
-    if (!user) {
-        throw new AppError("User not found", 404);
-    }
-
-    await CacheSet(Cachekeys.user(userId), user, TTL.USER);
-
-    return user;
 }
 
 export async function refreshTokens(token: string) {

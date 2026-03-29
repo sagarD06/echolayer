@@ -2,6 +2,8 @@ import { NextFunction, Request, Response } from "express";
 
 import { verifyAccessToken } from "../utils/jwt";
 import { AppError } from "../utils/app-error";
+import { getCurrentUser } from "../modules/user/user.service";
+import { Role } from "@echolayer/database";
 
 declare global {
     namespace Express {
@@ -9,6 +11,8 @@ declare global {
             user?: {
                 userId: string;
                 email: string;
+                organisationId: string;
+                role: Role;
             }
         }
     }
@@ -23,7 +27,17 @@ export async function authenticate(req: Request, _res: Response, next: NextFunct
 
     const token = authHeader.slice(7);
     try {
-        req.user = verifyAccessToken(token);
+        const payload = verifyAccessToken(token);
+
+        const user = await getCurrentUser(payload.userId);
+
+        req.user = {
+            userId: user.id,
+            email: user.email,
+            role: user.role,
+            organisationId: user.organisationId,
+        };
+
         next();
     } catch (error) {
         next(new AppError("Invalid or expired access token", 401));

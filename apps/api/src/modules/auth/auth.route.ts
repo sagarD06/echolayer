@@ -25,5 +25,3 @@ authRouter.post("/refresh", authController.refresh);
 /* Protected Routes */
 
 authRouter.post("/logout", authenticate, authController.logout);
-
-authRouter.get("/me", authenticate, authController.me);

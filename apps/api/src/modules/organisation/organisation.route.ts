@@ -6,7 +6,11 @@ import { verifyRole } from "../../middleware/user-role.middleware";
 
 export const organisationRouter: Router = Router();
 
-organisationRouter.get("/", authenticate, organisationController.getOrganisation);
-organisationRouter.get("/members", authenticate, organisationController.getOrganisationMembers);
-organisationRouter.delete("/members/:userId", authenticate, verifyRole("OWNER"), organisationController.removeOrganisationMember);
-organisationRouter.delete("/", authenticate, verifyRole("OWNER"), organisationController.deleteOrganisation);
+organisationRouter.use(authenticate);
+
+organisationRouter.get("/", organisationController.getOrganisation);
+
+/* Role Based Access Control Routes */
+organisationRouter.get("/members", verifyRole("OWNER"), organisationController.getOrganisationMembers);
+organisationRouter.delete("/members/:userId", verifyRole("OWNER"), organisationController.removeOrganisationMember);
+organisationRouter.delete("/", verifyRole("OWNER"), organisationController.deleteOrganisation);

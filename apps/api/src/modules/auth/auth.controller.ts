@@ -88,12 +88,3 @@ export async function logout(_req: Request, res: Response, next: NextFunction) {
         next(error)
     }
 }
-
-export async function me(req: Request, res: Response, next: NextFunction) {
-    try {
-        const user = await authService.getCurrentUser(req.user!.userId);
-        res.json({ user });
-    } catch (error) {
-        next(error)
-    }
-}

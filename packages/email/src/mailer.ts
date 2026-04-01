@@ -3,6 +3,7 @@ import { getResendClient } from "./client";
 import { VerificationEmail } from "./templates/VerificationEmail";
 import { ResetPasswordEmail } from "./templates/ResetPasswordEmail";
 import { WelcomeEmail } from "./templates/WelcomeEmail";
+import { InviteEmail } from "./templates/InviteEmail";
 
 const FROM = "EchoLayer <no-reply@echolayer.com>";
 
@@ -54,3 +55,20 @@ export async function sendWelcomeEmail(email: string, name: string, organisation
         throw new Error("Failed to send welcome email");
     }
 };
+
+/* Sends a Invite Email to the user when they are invited to join an organisation */
+export async function sendInviteEmail(email: string, name: string, organisationName: string, projectName: string, role: string, inviteToken: string) {
+    const inviteUrl = `${process.env.APP_URL}/accept-invite?token=${inviteToken}`;
+
+    const { error } = await getResendClient().emails.send({
+        from: FROM,
+        to: email,
+        subject: `You've been invited to join ${organisationName} on EchoLayer!`,
+        react: jsx(InviteEmail, { inviterName: name, organisationName, projectName, role, acceptUrl: inviteUrl })
+    })
+
+    if (error) {
+        console.error("Failed to send invite email:", error);
+        throw new Error("Failed to send invite email");
+    }
+}

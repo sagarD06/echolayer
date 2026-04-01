@@ -3,4 +3,9 @@
 export const Cachekeys = {
     user: (userId: string) => `cache:user:${userId}`,
     org: (orgId: string) => `cache:org:${orgId}`,
+    orgMembers: (orgId: string) => `cache:org-members:${orgId}`,
+    project: (projectId: string) => `cache:project:${projectId}`,
+    projectMembers: (projectId: string) => `cache:project-members:${projectId}`,
+    orgProjects: (orgId: string) => `cache:org-projects:${orgId}`,
+    projectInvites: (projectId: string) => `cache:project-invites:${projectId}`,
 } as const;

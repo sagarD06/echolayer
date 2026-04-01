@@ -24,10 +24,14 @@ model Project {
   id             String   @id @default(cuid())
   name           String
   organisationId String
+  createdBy      String
+  updatedBy      String?
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
   organisation Organisation    @relation(fields: [organisationId], references: [id], onDelete: Cascade)
+  creator      User            @relation("ProjectCreator", fields: [createdBy], references: [id], onDelete: Cascade)
+  updater      User?           @relation("ProjectUpdater", fields: [updatedBy], references: [id], onDelete: Cascade)
   members      ProjectMember[]
   feedbacks    Feedback[]
   invites      Invite[]
@@ -58,8 +62,10 @@ model User {
   createdAt                   DateTime  @default(now())
   updatedAt                   DateTime  @updatedAt
 
-  organisation Organisation    @relation(fields: [organisationId], references: [id], onDelete: Cascade)
-  projects     ProjectMember[]
+  organisation   Organisation    @relation(fields: [organisationId], references: [id], onDelete: Cascade)
+  projects       ProjectMember[]
+  projectCreator Project[]       @relation("ProjectCreator")
+  projectUpdater Project[]       @relation("ProjectUpdater")
 
   @@index([organisationId, createdAt])
 }
@@ -74,8 +80,8 @@ model ProjectMember {
   projectId String
   role      ProjectRole
 
-  user    User    @relation(fields: [userId], references: [id])
-  project Project @relation(fields: [projectId], references: [id])
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
   @@id([userId, projectId])
 }
@@ -123,6 +129,6 @@ model Invite {
   token          String      @unique
   expiresAt      DateTime
 
-  project      Project      @relation(fields: [projectId], references: [id])
-  organisation Organisation @relation(fields: [organizationId], references: [id])
+  project      Project      @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  organisation Organisation @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 }

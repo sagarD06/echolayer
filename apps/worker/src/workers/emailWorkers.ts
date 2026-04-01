@@ -41,3 +41,16 @@ welcomeEmailWorker.on("failed", (job, err) => {
 welcomeEmailWorker.on("error", (err) => {
     console.error("Worker error:", err);
 });
+
+/* Worker for processing invite email jobs */
+export const inviteEmailWorker = new Worker(JobName.SEND_INVITE_EMAIL, async (job) => { }, { connection: getRedisClient() })
+
+inviteEmailWorker.on("completed", (job) => {
+    console.log(`Job completed: ${job.id}`);
+});
+inviteEmailWorker.on("failed", (job, err) => {
+    console.error(`Job failed: ${job?.id}`, err);
+});
+inviteEmailWorker.on("error", (err) => {
+    console.error("Worker error:", err);
+});

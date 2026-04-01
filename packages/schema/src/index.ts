@@ -7,7 +7,7 @@ export * from "./organisation/createOrganisation.schema"
 
 //project schemas
 export * from "./project/addProjectMember.schema"
-export * from "./project/createProject.schema"
+export * from "./project/project.schema"
 
 //user schmema
 export * from "./user/createUser.schema"

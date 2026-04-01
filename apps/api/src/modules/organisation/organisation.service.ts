@@ -46,6 +46,14 @@ export async function getAllOrganisationMembers(organisationId: string): Promise
 
     if (!org) throw new AppError("Organisation not found", 404);
 
+    const cached = await CahceGet<OrgMember[]>(
+        Cachekeys.orgMembers(organisationId)
+    );
+
+    if (cached) {
+        return cached;
+    }
+
     const members = await prisma.user.findMany({
         where: { organisationId: organisationId },
         select: {
@@ -57,6 +65,8 @@ export async function getAllOrganisationMembers(organisationId: string): Promise
             createdAt: true
         }
     });
+
+    await CacheSet(Cachekeys.orgMembers(organisationId), members, TTL.ORG_MEMBERS);
 
     return members;
 }

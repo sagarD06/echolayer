@@ -1,6 +1,7 @@
 //feedback schemas
 export * from "./feedback/createFeedback.schema"
 export * from "./feedback/updateFeedback.schema"
+export * from "./feedback/listFeedbacks.schema"
 
 //organisation schema
 export * from "./organisation/createOrganisation.schema"

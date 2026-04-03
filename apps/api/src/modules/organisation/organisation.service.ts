@@ -1,4 +1,4 @@
-import { CacheDelete, Cachekeys, CacheSet, CahceGet, TTL } from "@echolayer/cache";
+import { CacheDelete, Cachekeys, CacheSet, CacheGet, TTL } from "@echolayer/cache";
 import { prisma, Organisation, Role } from "@echolayer/database";
 
 import { AppError } from "../../utils/app-error";
@@ -13,7 +13,7 @@ type OrgMember = {
 };
 
 export async function getOrganisation(organisationId: string) {
-    const cachedOrganisation = CahceGet<Organisation>(Cachekeys.org(organisationId));
+    const cachedOrganisation = CacheGet<Organisation>(Cachekeys.org(organisationId));
 
     if (cachedOrganisation) {
         return cachedOrganisation;
@@ -46,7 +46,7 @@ export async function getAllOrganisationMembers(organisationId: string): Promise
 
     if (!org) throw new AppError("Organisation not found", 404);
 
-    const cached = await CahceGet<OrgMember[]>(
+    const cached = await CacheGet<OrgMember[]>(
         Cachekeys.orgMembers(organisationId)
     );
 

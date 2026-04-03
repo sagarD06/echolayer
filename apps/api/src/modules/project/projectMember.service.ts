@@ -1,9 +1,8 @@
 import crypto from "crypto";
 import { prisma, ProjectRole, Role } from "@echolayer/database";
-import { CacheDelete, Cachekeys, CacheSet, CahceGet, TTL } from "@echolayer/cache";
+import { CacheDelete, Cachekeys, CacheSet, CacheGet, TTL } from "@echolayer/cache";
 
 import { AppError } from "../../utils/app-error";
-import { getQueues, JobName } from "@echolayer/queues";
 
 export async function addProjectMember(projectId: string, organisationId: string, email: string, role: Role | ProjectRole) {
     const project = await prisma.project.findUnique({
@@ -156,7 +155,7 @@ export async function getAllProjectMembers(projectId: string, organisationId: st
         throw new AppError("Project not found", 404);
     }
 
-    const cached = await CahceGet<{
+    const cached = await CacheGet<{
         id: string;
         name: string;
         email: string;

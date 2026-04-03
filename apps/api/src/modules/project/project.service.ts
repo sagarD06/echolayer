@@ -1,5 +1,5 @@
 import { prisma, Project, ProjectRole, Role } from "@echolayer/database";
-import { CacheDelete, Cachekeys, CacheSet, CahceGet, TTL } from "@echolayer/cache";
+import { CacheDelete, Cachekeys, CacheSet, CacheGet, TTL } from "@echolayer/cache";
 
 import { AppError } from "../../utils/app-error";
 
@@ -38,7 +38,7 @@ export async function createProject(organisationId: string, userId: string, name
 
 export async function getProjects(organisationId: string, userId: string, role: Role | ProjectRole) {
     if (role === "OWNER") {
-        const projectCache = await CahceGet<Project[]>(Cachekeys.orgProjects(organisationId))
+        const projectCache = await CacheGet<Project[]>(Cachekeys.orgProjects(organisationId))
 
         if (projectCache) {
             return projectCache;
@@ -79,7 +79,7 @@ export async function getProjects(organisationId: string, userId: string, role: 
 }
 
 export async function getProjectById(projectId: string, organisationId: string) {
-    const cachedProject = await CahceGet<Project>(Cachekeys.project(projectId));
+    const cachedProject = await CacheGet<Project>(Cachekeys.project(projectId));
 
     if (cachedProject) {
         return cachedProject;

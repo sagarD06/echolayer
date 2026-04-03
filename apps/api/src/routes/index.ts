@@ -6,6 +6,7 @@ import { organisationRouter } from "../modules/organisation/organisation.route";
 import { projectRouter } from "../modules/project/project.route";
 import { inviteRouter } from "../modules/invite/invite.route";
 import { feedbackRouter } from "../modules/feedback/feedback.route";
+import { statRouter } from "../modules/stats/stats.route";
 
 export const appRouter: Router = Router();
 
@@ -15,3 +16,4 @@ appRouter.use("/organisation", organisationRouter);
 appRouter.use("/projects", projectRouter);
 appRouter.use("/invites", inviteRouter);
 appRouter.use("/feedbacks", feedbackRouter);
+appRouter.use("/stats", statRouter);

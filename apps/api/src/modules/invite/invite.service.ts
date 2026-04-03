@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 
 import { prisma, ProjectRole } from "@echolayer/database";
 import { getQueues, JobName } from "@echolayer/queues";
-import { CacheDelete, Cachekeys, CacheSet, CahceGet, TTL } from "@echolayer/cache";
+import { CacheDelete, Cachekeys, CacheSet, CacheGet, TTL } from "@echolayer/cache";
 
 import { AppError } from "../../utils/app-error";
 
@@ -89,7 +89,7 @@ export async function listInvites(projectId: string, organisationId: string) {
         throw new AppError("Project not found", 404);
     }
 
-    const cachedInvites = await CahceGet<{
+    const cachedInvites = await CacheGet<{
         id: string;
         email: string;
         role: string;

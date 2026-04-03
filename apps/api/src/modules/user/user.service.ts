@@ -1,10 +1,10 @@
-import { Cachekeys, CacheSet, CahceGet, TTL } from "@echolayer/cache";
+import { Cachekeys, CacheSet, CacheGet, TTL } from "@echolayer/cache";
 import { prisma, Role } from "@echolayer/database";
 
 import { AppError } from "../../utils/app-error";
 
 export async function getCurrentUser(userId: string) {
-    const cachedUser = await CahceGet<{
+    const cachedUser = await CacheGet<{
         id: string;
         name: string;
         email: string;

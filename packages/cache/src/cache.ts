@@ -3,7 +3,7 @@ import { getRedisClient } from "@echolayer/redis";
 const redisClient = getRedisClient();
 
 /* Function to get a value from the cache */
-export async function CahceGet<T>(key: string): Promise<T | null> {
+export async function CacheGet<T>(key: string): Promise<T | null> {
     try {
         const value = await redisClient.get(key);
         if (value) {

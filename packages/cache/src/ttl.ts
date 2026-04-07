@@ -3,4 +3,8 @@
 export const TTL = {
     USER: 60 * 15, // 15 minutes
     ORG: 60 * 60, // 1 hour
+    ORG_MEMBERS: 60 * 15, // 15 minutes
+    PROJECT: 60 * 30, // 30 minutes
+    PROJECT_MEMBERS: 60 * 15, // 15 minutes — shorter than project since membership changes more frequently
+    STATS: 60 * 5 //5 minutes
 } as const;

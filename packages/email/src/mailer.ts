@@ -1,10 +1,15 @@
+import dotenv from "dotenv";
+import path from "path";
+dotenv.config({ path: path.resolve(__dirname, "../../../.env") });
+
 import { jsx } from "react/jsx-runtime";
 import { getResendClient } from "./client";
 import { VerificationEmail } from "./templates/VerificationEmail";
 import { ResetPasswordEmail } from "./templates/ResetPasswordEmail";
 import { WelcomeEmail } from "./templates/WelcomeEmail";
+import { InviteEmail } from "./templates/InviteEmail";
 
-const FROM = "EchoLayer <no-reply@echolayer.com>";
+const FROM = "onboarding@resend.dev";
 
 /* Sends a verification email to the user */
 export async function sendVerificationEmail(email: string, name: string, verificationToken: string) {
@@ -31,7 +36,7 @@ export async function sendPasswordResetEmail(email: string, name: string, resetP
         from: FROM,
         to: email,
         subject: "Reset your password",
-        react: jsx(ResetPasswordEmail, { name, resetPasswordURL })
+        react: jsx(ResetPasswordEmail, { name, resetUrl:resetPasswordURL })
     })
 
     if (error) {
@@ -54,3 +59,20 @@ export async function sendWelcomeEmail(email: string, name: string, organisation
         throw new Error("Failed to send welcome email");
     }
 };
+
+/* Sends a Invite Email to the user when they are invited to join an organisation */
+export async function sendInviteEmail(email: string, name: string, organisationName: string, projectName: string, role: string, inviteToken: string) {
+    const inviteUrl = `${process.env.APP_URL}/accept-invite?token=${inviteToken}`;
+
+    const { error } = await getResendClient().emails.send({
+        from: FROM,
+        to: email,
+        subject: `You've been invited to join ${organisationName} on EchoLayer!`,
+        react: jsx(InviteEmail, { inviterName: name, organisationName, projectName, role, acceptUrl: inviteUrl })
+    })
+
+    if (error) {
+        console.error("Failed to send invite email:", error);
+        throw new Error("Failed to send invite email");
+    }
+}

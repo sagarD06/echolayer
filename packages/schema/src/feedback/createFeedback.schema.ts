@@ -16,12 +16,11 @@ export const FeedbackStatusSchema = z.enum([
 ])
 
 export const CreateFeedbackSchema = z.object({
-    title: z.string().min(2).max(120),
-    content: z.string().min(2).max(1000),
-    type: FeedbackTypeSchema,
-    status: FeedbackStatusSchema,
-    projectId: z.cuid(),
-    organisationId: z.cuid()
+    body: z.object({
+        title: z.string().min(2).max(120),
+        content: z.string().min(2).max(1000),
+        type: FeedbackTypeSchema,
+    })
 })
 
 export type CreateFeedbackInput = z.infer<typeof CreateFeedbackSchema>

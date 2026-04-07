@@ -6,5 +6,5 @@ export async function sendVerificationEmailProcessor(job: Job<SendVerificationEm
 
     console.log(job.id, job.data.email)
 
-    sendVerificationEmail(job.data.name, job.data.email, job.data.verificationToken)
+    sendVerificationEmail(job.data.email,job.data.name, job.data.verificationToken)
 };

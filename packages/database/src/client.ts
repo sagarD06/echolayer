@@ -13,7 +13,10 @@ function createPrismaClient() {
     if (!connectionString) {
         throw new Error("DATABASE_URL is not set");
     }
-    const pgAdapter = new PrismaPg({ connectionString });
+    const pgAdapter = new PrismaPg({
+        connectionString, max: 10,
+        idleTimeoutMillis: 30000
+    });
     return new PrismaClient({ adapter: pgAdapter });
 }
 

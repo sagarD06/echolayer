@@ -3,22 +3,14 @@ import { CacheDelete, Cachekeys, CacheSet, CacheGet, TTL } from "@echolayer/cach
 
 import { AppError } from "../../utils/app-error";
 
-export async function createProject(organisationId: string, userId: string, name: string) {
-    if (!name) {
+export async function createProject(organisationId: string, userId: string, body: {name: string}) {
+    if (!body.name) {
         throw new AppError("Project name is required", 400);
-    }
-
-    const organisation = await prisma.organisation.findUnique({
-        where: { id: organisationId, isActive: true }
-    })
-
-    if (!organisation) {
-        throw new AppError("Organisation not found", 404);
     }
 
     const project = await prisma.project.create({
         data: {
-            name: name,
+            name: body.name,
             organisationId: organisationId,
             createdBy: userId,
         },

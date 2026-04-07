@@ -20,7 +20,6 @@ export const CreateFeedbackSchema = z.object({
         title: z.string().min(2).max(120),
         content: z.string().min(2).max(1000),
         type: FeedbackTypeSchema,
-        projectId: z.string().min(1),
     })
 })
 

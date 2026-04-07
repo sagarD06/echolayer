@@ -1,3 +1,7 @@
+import dotenv from "dotenv";
+import path from "path";
+dotenv.config({ path: path.resolve(__dirname, "../../../.env") });
+
 import { Resend } from "resend";
 
 let client: Resend | null = null;

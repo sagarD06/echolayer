@@ -259,7 +259,7 @@ export async function acceptInvite(inviteToken: string, name: string, phone: str
                 id: true, name: true, email: true
             }
         })
-        tx.projectMember.create({
+        await tx.projectMember.create({
             data: {
                 userId: user.id,
                 projectId: invite.projectId,
@@ -267,7 +267,7 @@ export async function acceptInvite(inviteToken: string, name: string, phone: str
             }
         })
 
-        tx.invite.delete({
+        await tx.invite.delete({
             where: { id: invite.id }
         })
 

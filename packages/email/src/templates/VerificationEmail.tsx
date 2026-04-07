@@ -1,3 +1,4 @@
+import React from "react";
 import {
     Button,
     Link,
@@ -8,10 +9,10 @@ import { EmailLayout } from "./EmailLayout";
 
 interface Props {
     name: string;
-    verificationUrl: string;
+    verificationURL: string;
 }
 
-export function VerificationEmail({ name, verificationUrl }: Props) {
+export function VerificationEmail({ name, verificationURL }: Props) {
     return (
         <EmailLayout previewText="Verify your EchoLayer email address">
             <Text style={greeting}>Hi {name},</Text>
@@ -21,7 +22,7 @@ export function VerificationEmail({ name, verificationUrl }: Props) {
             </Text>
 
             <Section style={buttonContainer}>
-                <Button style={button} href={verificationUrl}>
+                <Button style={button} href={verificationURL}>
                     Verify email address
                 </Button>
             </Section>
@@ -34,8 +35,8 @@ export function VerificationEmail({ name, verificationUrl }: Props) {
             <Text style={fallbackLabel}>
                 If the button doesn't work, copy and paste this link into your browser:
             </Text>
-            <Link href={verificationUrl} style={fallbackLink}>
-                {verificationUrl}
+            <Link href={verificationURL} style={fallbackLink}>
+                {verificationURL}
             </Link>
         </EmailLayout>
     );

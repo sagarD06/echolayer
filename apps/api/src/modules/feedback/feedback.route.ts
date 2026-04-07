@@ -11,13 +11,18 @@ export const feedbackRouter: Router = Router();
 
 /* public route */
 
-feedbackRouter.post("/", validate(CreateFeedbackSchema), feedbackController.createFeedback);
+feedbackRouter.post("/:projectId", validate(CreateFeedbackSchema), feedbackController.createFeedback);
 
 /* protected routes */
-feedbackRouter.get("projects/:projectId", authenticate, verifyProjectAccess(), validate(listFeedbacksSchema), feedbackController.listFeedbacks);
+feedbackRouter.get("/projects/:projectId",
+    (req, _res, next) => {
+        Object.defineProperty(req, 'query', { ...Object.getOwnPropertyDescriptor(req, 'query'), value: req.query, writable: true });
+        next();
+    },
+    authenticate, verifyProjectAccess(), validate(listFeedbacksSchema), feedbackController.listFeedbacks);
 
 feedbackRouter.put("/:feedbackId/status", authenticate, verifyProjectAccess(), validate(updateFeedbackStatusSchema), feedbackController.updateFeedbackStatus);
 
 feedbackRouter.delete("/:feedbackId", authenticate, verifyProjectAccess(), feedbackController.deleteFeedback);
 
-feedbackRouter.get("projects/:projectId/export", authenticate, verifyProjectAccess(), feedbackController.exportFeedbacks);
+feedbackRouter.get("/projects/:projectId/export", authenticate, verifyProjectAccess(), feedbackController.exportFeedbacks);

@@ -20,7 +20,7 @@ export async function getProjectStats(req: Request, res: Response, next: NextFun
 
         const days = Number(req.query.days) || 30;
 
-        const stats = await statsService.getProjectStats(req.params.projectsId as string, req.user!.organisationId, days)
+        const stats = await statsService.getProjectStats(req.params.projectId as string, req.user!.organisationId, days)
 
         res.status(200).json({ stats });
     } catch (error) {

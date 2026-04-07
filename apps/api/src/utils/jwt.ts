@@ -1,3 +1,7 @@
+import dotenv from "dotenv";
+import path from "path";
+dotenv.config({ path: path.resolve(__dirname, "../../../.env") });
+
 import jwt from "jsonwebtoken";
 
 export interface TokenPayload {
@@ -6,7 +10,7 @@ export interface TokenPayload {
 }
 
 export function signAccessTokeen(payload: TokenPayload) {
-    return jwt.sign(payload, process.env.JWT_ACCESS_SECRET as string, { expiresIn: "15m" });
+    return jwt.sign(payload, process.env.JWT_ACCESS_SECRET as string, { expiresIn: "30m" });
 }
 
 export function signRefreshToken(payload: TokenPayload) {

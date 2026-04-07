@@ -13,7 +13,7 @@ type OrgMember = {
 };
 
 export async function getOrganisation(organisationId: string) {
-    const cachedOrganisation = CacheGet<Organisation>(Cachekeys.org(organisationId));
+    const cachedOrganisation = await CacheGet<Organisation>(Cachekeys.org(organisationId));
 
     if (cachedOrganisation) {
         return cachedOrganisation;
@@ -33,7 +33,7 @@ export async function getOrganisation(organisationId: string) {
         return new AppError("Organisation not found", 404);
     }
 
-    CacheSet(Cachekeys.org(organisationId), organisationData, TTL.ORG);
+    await CacheSet(Cachekeys.org(organisationId), organisationData, TTL.ORG);
 
     return organisationData;
 }

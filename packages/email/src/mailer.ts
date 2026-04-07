@@ -1,3 +1,7 @@
+import dotenv from "dotenv";
+import path from "path";
+dotenv.config({ path: path.resolve(__dirname, "../../../.env") });
+
 import { jsx } from "react/jsx-runtime";
 import { getResendClient } from "./client";
 import { VerificationEmail } from "./templates/VerificationEmail";
@@ -5,7 +9,7 @@ import { ResetPasswordEmail } from "./templates/ResetPasswordEmail";
 import { WelcomeEmail } from "./templates/WelcomeEmail";
 import { InviteEmail } from "./templates/InviteEmail";
 
-const FROM = "EchoLayer <no-reply@echolayer.com>";
+const FROM = "onboarding@resend.dev";
 
 /* Sends a verification email to the user */
 export async function sendVerificationEmail(email: string, name: string, verificationToken: string) {
@@ -32,7 +36,7 @@ export async function sendPasswordResetEmail(email: string, name: string, resetP
         from: FROM,
         to: email,
         subject: "Reset your password",
-        react: jsx(ResetPasswordEmail, { name, resetPasswordURL })
+        react: jsx(ResetPasswordEmail, { name, resetUrl:resetPasswordURL })
     })
 
     if (error) {

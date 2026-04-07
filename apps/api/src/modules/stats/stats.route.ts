@@ -8,6 +8,11 @@ export const statRouter: Router = Router();
 
 statRouter.use(authenticate);
 
+statRouter.use((req, _res, next) => {
+    Object.defineProperty(req, 'query', { ...Object.getOwnPropertyDescriptor(req, 'query'), value: req.query, writable: true });
+    next();
+});
+
 statRouter.get("/org", statController.getOrganisationStats);
 
 statRouter.get("/:projectId", verifyProjectAccess(), statController.getProjectStats)

@@ -4,7 +4,7 @@ import * as feedbackService from "./feedback.service";
 
 export async function createFeedback(req: Request, res: Response, next: NextFunction) {
     try {
-        const feedback = await feedbackService.createFeedback(req.body.projectId, req.body);
+        const feedback = await feedbackService.createFeedback(req.params.projectId as string, req);
 
         res.status(201).json(feedback);
     } catch (error) {

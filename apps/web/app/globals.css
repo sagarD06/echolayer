@@ -1,50 +1,183 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  /* Primary — Violet */
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  /* Backgrounds */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  /* Secondary / Muted */
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  /* Semantic */
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Radius scale */
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+
+  /* Feedback type colors — semantic tokens */
+  --color-feedback-idea: var(--feedback-idea);
+  --color-feedback-idea-fg: var(--feedback-idea-fg);
+  --color-feedback-suggestion: var(--feedback-suggestion);
+  --color-feedback-suggestion-fg: var(--feedback-suggestion-fg);
+  --color-feedback-problem: var(--feedback-problem);
+  --color-feedback-problem-fg: var(--feedback-problem-fg);
+  --color-feedback-question: var(--feedback-question);
+  --color-feedback-question-fg: var(--feedback-question-fg);
+  --color-feedback-praise: var(--feedback-praise);
+  --color-feedback-praise-fg: var(--feedback-praise-fg);
+
+  /* Feedback status colors */
+  --color-status-open: var(--status-open);
+  --color-status-open-fg: var(--status-open-fg);
+  --color-status-planned: var(--status-planned);
+  --color-status-planned-fg: var(--status-planned-fg);
+  --color-status-in-progress: var(--status-in-progress);
+  --color-status-in-progress-fg: var(--status-in-progress-fg);
+  --color-status-completed: var(--status-completed);
+  --color-status-completed-fg: var(--status-completed-fg);
+}
+
+/* ─── Light mode ─────────────────────────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --radius: 0.625rem;
+
+  /* Core surfaces */
+  --background:          oklch(100% 0 0);           /* #ffffff */
+  --foreground:          oklch(14% 0.02 264);        /* #111827 */
+  --card:                oklch(98.5% 0.002 264);     /* #f9fafb */
+  --card-foreground:     oklch(14% 0.02 264);
+  --popover:             oklch(100% 0 0);
+  --popover-foreground:  oklch(14% 0.02 264);
+
+  /* Primary — Violet 500/600 */
+  --primary:             oklch(62% 0.22 292);        /* #8b5cf6 */
+  --primary-foreground:  oklch(100% 0 0);
+
+  /* Secondary — light muted surface */
+  --secondary:           oklch(96.5% 0.003 264);     /* #f3f4f6 */
+  --secondary-foreground: oklch(14% 0.02 264);
+
+  /* Muted */
+  --muted:               oklch(96.5% 0.003 264);     /* #f3f4f6 */
+  --muted-foreground:    oklch(46% 0.01 264);        /* #6b7280 */
+
+  /* Accent — subtle violet tint */
+  --accent:              oklch(94% 0.03 292);        /* #ede9fe */
+  --accent-foreground:   oklch(30% 0.18 292);        /* #4c1d95 */
+
+  /* Semantic */
+  --destructive:         oklch(58% 0.22 27);         /* #ef4444 */
+  --border:              oklch(91% 0.005 264);        /* #e5e7eb */
+  --input:               oklch(91% 0.005 264);
+  --ring:                oklch(62% 0.22 292);        /* matches primary */
+
+  /* Feedback types — bg / fg pairs */
+  --feedback-idea:        oklch(94% 0.03 292);       /* violet-50  #ede9fe */
+  --feedback-idea-fg:     oklch(30% 0.18 292);       /* violet-900 #4c1d95 */
+  --feedback-suggestion:  oklch(93% 0.04 240);       /* blue-100   #dbeafe */
+  --feedback-suggestion-fg: oklch(25% 0.14 240);     /* blue-900   #1e40af */
+  --feedback-problem:     oklch(93% 0.05 27);        /* red-100    #fee2e2 */
+  --feedback-problem-fg:  oklch(30% 0.18 27);        /* red-900    #991b1b */
+  --feedback-question:    oklch(95% 0.06 85);        /* amber-100  #fef3c7 */
+  --feedback-question-fg: oklch(35% 0.14 85);        /* amber-900  #92400e */
+  --feedback-praise:      oklch(95% 0.06 145);       /* green-100  #dcfce7 */
+  --feedback-praise-fg:   oklch(25% 0.12 145);       /* green-900  #14532d */
+
+  /* Feedback statuses */
+  --status-open:          oklch(94% 0.03 292);       /* violet tint */
+  --status-open-fg:       oklch(30% 0.18 292);
+  --status-planned:       oklch(95% 0.06 85);        /* amber tint */
+  --status-planned-fg:    oklch(35% 0.14 85);
+  --status-in-progress:   oklch(93% 0.04 240);       /* blue tint */
+  --status-in-progress-fg: oklch(25% 0.14 240);
+  --status-completed:     oklch(95% 0.06 145);       /* green tint */
+  --status-completed-fg:  oklch(25% 0.12 145);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ─── Dark mode ──────────────────────────────────────────── */
+.dark {
+  /* Core surfaces — GitHub-scale dark gray */
+  --background:          oklch(11% 0.015 264);       /* #0d1117 */
+  --foreground:          oklch(93% 0.008 210);       /* #e6edf3 */
+  --card:                oklch(14% 0.015 264);       /* #161b22 */
+  --card-foreground:     oklch(93% 0.008 210);
+  --popover:             oklch(14% 0.015 264);
+  --popover-foreground:  oklch(93% 0.008 210);
+
+  /* Primary — Violet stays the same, works on dark */
+  --primary:             oklch(62% 0.22 292);        /* #8b5cf6 */
+  --primary-foreground:  oklch(100% 0 0);
+
+  /* Secondary */
+  --secondary:           oklch(18% 0.015 264);       /* #21262d */
+  --secondary-foreground: oklch(93% 0.008 210);
+
+  /* Muted */
+  --muted:               oklch(18% 0.015 264);       /* #21262d */
+  --muted-foreground:    oklch(59% 0.01 215);        /* #8b949e */
+
+  /* Accent — dark violet tint */
+  --accent:              oklch(22% 0.06 292);
+  --accent-foreground:   oklch(85% 0.1 292);
+
+  /* Semantic */
+  --destructive:         oklch(58% 0.22 27);
+  --border:              oklch(24% 0.015 264);       /* #30363d */
+  --input:               oklch(24% 0.015 264);
+  --ring:                oklch(62% 0.22 292);
+
+  /* Feedback types — darker bg, lighter fg for dark mode */
+  --feedback-idea:        oklch(22% 0.06 292);
+  --feedback-idea-fg:     oklch(85% 0.1 292);
+  --feedback-suggestion:  oklch(20% 0.06 240);
+  --feedback-suggestion-fg: oklch(80% 0.1 240);
+  --feedback-problem:     oklch(20% 0.06 27);
+  --feedback-problem-fg:  oklch(80% 0.12 27);
+  --feedback-question:    oklch(22% 0.06 85);
+  --feedback-question-fg: oklch(85% 0.1 85);
+  --feedback-praise:      oklch(20% 0.06 145);
+  --feedback-praise-fg:   oklch(80% 0.1 145);
+
+  /* Feedback statuses */
+  --status-open:          oklch(22% 0.06 292);
+  --status-open-fg:       oklch(85% 0.1 292);
+  --status-planned:       oklch(22% 0.06 85);
+  --status-planned-fg:    oklch(85% 0.1 85);
+  --status-in-progress:   oklch(20% 0.06 240);
+  --status-in-progress-fg: oklch(80% 0.1 240);
+  --status-completed:     oklch(20% 0.06 145);
+  --status-completed-fg:  oklch(80% 0.1 145);
+}
+
+/* ─── Base styles ────────────────────────────────────────── */
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
   }
-}
-
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-}
-
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-.imgDark {
-  display: none;
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-
-  .imgLight {
-    display: none;
-  }
-  .imgDark {
-    display: unset;
+  body {
+    @apply bg-background text-foreground;
   }
 }

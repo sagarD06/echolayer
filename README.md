@@ -1,159 +1,191 @@
-# Turborepo starter
+# EchoLayer
 
-This Turborepo starter is maintained by the Turborepo core team.
+A multi-tenant feedback SaaS platform where organisations collect, manage, and analyze user feedback through embeddable widgets, shareable links, and QR codes — all anonymous by default.
 
-## Using this example
+---
 
-Run the following command:
+## Overview
 
-```sh
-npx create-turbo@latest
+EchoLayer lets product teams close the feedback loop without friction. Organisations sign up, create projects, and share a widget or link with their customers. Feedback flows in anonymously, gets triaged by status, and can be summarized instantly using AI analysis.
+
+---
+
+## Features
+
+- **Multi-tenant architecture** — organisations with role-based access (Owner, Admin, Member) at both org and project level
+- **Anonymous feedback collection** — no login required for submitters
+- **Flexible collection methods** — embeddable widget, shareable link, QR code
+- **Feedback lifecycle** — Open → Planned → In Progress → Completed
+- **Feedback types** — Idea, Suggestion, Problem, Question, Praise
+- **AI analysis** — one-click summary of feedback trends across a project
+- **Team management** — invite members by email, manage roles, resend/cancel invites
+- **CSV export** — download all project feedback for external reporting
+- **Org-level and project-level stats dashboards**
+- **Email notifications** — async mail delivery via BullMQ job queues
+
+---
+
+## Tech Stack
+
+### Monorepo
+- [Turborepo](https://turbo.build/) — monorepo build system
+- [pnpm workspaces](https://pnpm.io/workspaces) — package management
+
+### Backend (`apps/server`)
+- [Node.js](https://nodejs.org/) + [Express](https://expressjs.com/) — HTTP server
+- [PostgreSQL](https://www.postgresql.org/) — primary database
+- [Prisma](https://www.prisma.io/) — ORM and schema management
+- [Redis](https://redis.io/) — caching and session store
+- [BullMQ](https://bullmq.io/) — background job queue for email delivery
+- JWT authentication — access token in memory, refresh token in httpOnly cookie
+- Role-based access control — org-level and project-level roles
+- Zod schema validation via `@echolayer/schema` shared package
+
+### Frontend (`apps/web`)
+- [Next.js 16](https://nextjs.org/) — React framework with App Router
+- [React 19](https://react.dev/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Tailwind CSS v4](https://tailwindcss.com/)
+- [Shadcn/ui](https://ui.shadcn.com/) — accessible component primitives
+- [Aceternity UI](https://ui.aceternity.com/) — animated UI components
+- [Framer Motion](https://www.framer.com/motion/) — animations
+- [Zustand](https://zustand-demo.pmnd.rs/) — client auth state (in-memory access token)
+- [RTK Query](https://redux-toolkit.js.org/rtk-query/overview) — server state, data fetching, cache management
+- [Lucide React](https://lucide.dev/) — icons
+
+### Shared Packages
+- `@echolayer/schema` — Zod schemas shared between server and client
+
+---
+
+## Project Structure
+
+```
+echolayer/
+├── apps/
+│   ├── server/                 # Express API
+│   │   └── src/
+│   │       ├── modules/
+│   │       │   ├── auth/
+│   │       │   ├── user/
+│   │       │   ├── organisation/
+│   │       │   ├── project/
+│   │       │   ├── invite/
+│   │       │   ├── feedback/
+│   │       │   └── stats/
+│   │       └── middleware/
+│   └── web/                    # Next.js frontend
+│       └── app/
+│           ├── (auth)/
+│           ├── (dashboard)/
+│           ├── feedback/[projectId]/
+│           └── invite/accept/
+├── packages/
+│   └── schema/                 # Shared Zod schemas
+├── turbo.json
+└── pnpm-workspace.yaml
 ```
 
-## What's inside?
+---
 
-This Turborepo includes the following packages/apps:
+## API Modules
 
-### Apps and Packages
+| Module | Routes |
+|---|---|
+| Auth | Register, login, logout, verify email, forgot/reset password, refresh token |
+| User | Get current user |
+| Organisation | Get org, get members, remove member, delete org |
+| Project | CRUD, project member management, role updates |
+| Invite | Send, accept, resend, cancel, list invites |
+| Feedback | Create (public/anonymous), list, update status, delete, export CSV |
+| Stats | Org-level stats, project-level stats |
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+---
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+## Data Model
 
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo build
+```
+Organisation
+  └── Users (OWNER | ADMIN | MEMBER)
+  └── Projects
+        └── ProjectMembers (ADMIN | MEMBER)
+        └── Feedbacks (IDEA | SUGGESTION | PROBLEM | QUESTION | PRAISE)
+              └── Status (OPEN | PLANNED | IN_PROGRESS | COMPLETED)
+        └── Invites
 ```
 
-Without global `turbo`, use your package manager:
+---
 
-```sh
-cd my-turborepo
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
+## Getting Started
+
+### Prerequisites
+
+- Node.js 20+
+- pnpm 9+
+- PostgreSQL
+- Redis
+
+### Installation
+
+```bash
+git clone https://github.com/sagarD06/echolayer.git
+cd echolayer
+pnpm install
 ```
 
-You can build a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+### Environment variables
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
+Create `.env` files in both `root` and `apps/web`.
 
-```sh
-turbo build --filter=docs
+**`.env`**
+```env
+DATABASE_URL=postgresql://user:password@localhost:5432/echolayer
+REDIS_URL=redis://localhost:6379
+ACCESS_TOKEN_SECRET=your_access_token_secret
+REFRESH_TOKEN_SECRET=your_refresh_token_secret
+EMAIL_HOST=smtp.example.com
+EMAIL_PORT=587
+EMAIL_USER=your@email.com
+EMAIL_PASS=your_email_password
+CLIENT_URL=http://localhost:3000
+PORT=4000
 ```
 
-Without global `turbo`:
-
-```sh
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
+**`apps/web/.env.local`**
+```env
+NEXT_PUBLIC_API_URL=http://localhost:5000/api
 ```
 
-### Develop
+### Database setup
 
-To develop all apps and packages, run the following command:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo dev
+```bash
+cd apps/server
+pnpm prisma migrate dev
+pnpm prisma generate
 ```
 
-Without global `turbo`, use your package manager:
+### Development
 
-```sh
-cd my-turborepo
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
+```bash
+# from repo root — runs all apps in parallel
+pnpm dev
+
+# or individually
+pnpm dev --filter=server
+pnpm dev --filter=web
 ```
 
-You can develop a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+---
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
+## Auth Flow
 
-```sh
-turbo dev --filter=web
-```
+- Registration creates an organisation and owner user atomically
+- Access token stored in memory (Zustand), never in localStorage
+- Refresh token stored in httpOnly cookie
+- Silent refresh via RTK Query `baseQueryWithReauth` — intercepts 401s, refreshes, retries original request transparently
 
-Without global `turbo`:
+---
 
-```sh
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-```
+## Feedback Collection
 
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo login
-```
-
-Without global `turbo`, use your package manager:
-
-```sh
-cd my-turborepo
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo link
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.dev/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.dev/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.dev/docs/reference/configuration)
-- [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)
+The feedback submission endpoint (`POST /feedbacks/:projectId`) requires no authentication — it is the public-facing endpoint used by embedded widgets, shared links, and QR codes. All submissions are anonymous.

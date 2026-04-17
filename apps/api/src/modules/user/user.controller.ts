@@ -4,7 +4,7 @@ import * as userService from "./user.service";
 export async function me(req: Request, res: Response, next: NextFunction) {
     try {
         const user = await userService.getCurrentUser(req.user!.userId);
-        res.json({ user });
+        res.json(user);
     } catch (error) {
         next(error)
     }

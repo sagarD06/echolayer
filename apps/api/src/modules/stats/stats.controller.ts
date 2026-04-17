@@ -9,7 +9,7 @@ export async function getOrganisationStats(req: Request, res: Response, next: Ne
 
         const stats = await statsService.getOrganisationStats(req.user!.organisationId, days)
 
-        res.status(200).json({ stats });
+        res.status(200).json(stats);
     } catch (error) {
         next(error);
     }

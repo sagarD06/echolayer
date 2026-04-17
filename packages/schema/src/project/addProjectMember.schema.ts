@@ -39,5 +39,5 @@ export const updateProjectMemberRoleSchema = z.object({
 
 export type SendInviteInput = z.infer<typeof sendInviteSchema>;
 export type AcceptInviteInput = z.infer<typeof acceptInviteSchema>;
-export type AddProjectMemberInput = z.infer<typeof addProjectMemberSchema>;
-export type UpdateProjectMemberRoleInput = z.infer<typeof updateProjectMemberRoleSchema>;
+export type AddProjectMemberInput = z.infer<typeof addProjectMemberSchema>["body"] & { projectId: string };
+export type UpdateProjectMemberRoleInput = z.infer<typeof updateProjectMemberRoleSchema>["body"] & { projectId: string; userId: string };

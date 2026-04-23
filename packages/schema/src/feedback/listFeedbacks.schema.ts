@@ -10,4 +10,4 @@ export const listFeedbacksSchema = z.object({
   }),
 });
 
-export type ListFeedbacksInput = z.infer<typeof listFeedbacksSchema>;
+export type ListFeedbacksInput = z.infer<typeof listFeedbacksSchema>["params"] & {projectId: string};

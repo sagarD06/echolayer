@@ -3,7 +3,6 @@
 import { usePathname } from "next/navigation";
 import { useAuthStore } from "@/store/Auth.store";
 import { useGetOrganisationQuery } from "@/services/organisation.api";
-import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Building2 } from "lucide-react";
 
@@ -33,7 +32,6 @@ export function Header() {
     const pathname = usePathname();
     const user = useAuthStore((s) => s.user);
     const { data: org, isLoading } = useGetOrganisationQuery();
-    console.log(user)
 
     return (
         <header className="h-14 flex items-center justify-between px-6 border-b border-border bg-card shrink-0">

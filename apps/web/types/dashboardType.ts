@@ -28,10 +28,8 @@ export interface Feedback {
     content: string;
     type: FeedbackType;
     status: FeedbackStatus;
-    projectId: string;
-    organisationId: string;
-    createdAt: string;
-    updatedAt: string;
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 export interface OrgStats {
@@ -55,6 +53,6 @@ export interface ProjectStats {
     totalFeedbacks: number;
     openFeedbacks: number;
     resolvedFeedbacks: number;
-    feedbacksByType: Record<FeedbackType, number>;
-    feedbacksByStatus: Record<FeedbackStatus, number>;
+    feedbackByType: Record<FeedbackType, number>;
+    feedbackByStatus: Record<FeedbackStatus, number>;
 }

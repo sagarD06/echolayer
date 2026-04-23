@@ -31,13 +31,13 @@ const NAV_ITEMS = [
     },
     {
         label: "Projects",
-        href: "/dashboard/projects",
+        href: "/projects",
         icon: FolderKanban,
         exact: false,
     },
     {
         label: "Settings",
-        href: "/dashboard/settings",
+        href: "/settings",
         icon: Settings,
         exact: false,
     },

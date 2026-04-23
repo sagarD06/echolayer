@@ -21,8 +21,8 @@ feedbackRouter.get("/projects/:projectId",
     },
     authenticate, verifyProjectAccess(), validate(listFeedbacksSchema), feedbackController.listFeedbacks);
 
-feedbackRouter.put("/:feedbackId/status", authenticate, verifyProjectAccess(), validate(updateFeedbackStatusSchema), feedbackController.updateFeedbackStatus);
+feedbackRouter.put("/:projectId/:feedbackId/status", authenticate, verifyProjectAccess(), validate(updateFeedbackStatusSchema), feedbackController.updateFeedbackStatus);
 
-feedbackRouter.delete("/:feedbackId", authenticate, verifyProjectAccess(), feedbackController.deleteFeedback);
+feedbackRouter.delete("/:projectId/:feedbackId", authenticate, verifyProjectAccess(), feedbackController.deleteFeedback);
 
 feedbackRouter.get("/projects/:projectId/export", authenticate, verifyProjectAccess(), feedbackController.exportFeedbacks);

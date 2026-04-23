@@ -29,8 +29,6 @@ export default function DashboardPage() {
   const user = useAuthStore((s) => s.user);
   const { data: stats, isLoading } = useGetOrgStatsQuery();
 
-  console.log(stats)
-
   const resolvedPercent =
     stats && stats.totalFeedbacks > 0 && stats.feedbackByStatus.COMPLETED
       ? Math.round((stats.feedbackByStatus.COMPLETED / stats.totalFeedbacks) * 100)

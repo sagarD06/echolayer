@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { useGetProjectQuery } from "@/services/project.api";
@@ -23,6 +23,7 @@ export default function ProjectDetailPage() {
     const params = useParams<{ projectId: string }>();
     const projectId = params?.projectId;
 
+    const [total, setTotal] = useState<number>(0);
     const [typeFilter, setTypeFilter] = useState<FeedbackType | undefined>();
     const [statusFilter, setStatusFilter] = useState<FeedbackStatus | undefined>();
 
@@ -49,8 +50,19 @@ export default function ProjectDetailPage() {
         }
     }
 
-    const feedbacks = feedbackData?.items ?? [];
-    const total = feedbackData?.items.length ?? 0;
+    const feedbacks = useMemo(() => {
+        let feedbacks = feedbackData?.items ?? [];
+        if (typeFilter) {
+            feedbacks = feedbacks.filter(fb => fb.type === typeFilter);
+        }
+        if (statusFilter) {
+            feedbacks = feedbacks.filter(fb => fb.status === statusFilter);
+        }
+
+        const total = feedbacks?.length ?? 0;
+        setTotal(total);
+        return feedbacks;
+    }, [typeFilter, statusFilter, feedbackData]);
 
     return (
         <div className="flex flex-col gap-6 max-w-5xl">

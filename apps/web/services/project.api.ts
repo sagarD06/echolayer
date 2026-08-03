@@ -4,14 +4,12 @@ import { baseApi } from "./base.api";
 import type { Project } from "@/types/dashboardType";
 
 export interface ProjectMember {
-    userId: string;
+    Id: string;
     projectId: string;
     role: "ADMIN" | "MEMBER";
-    user: {
-        id: string;
-        name: string;
-        email: string;
-    };
+    id: string;
+    name: string;
+    email: string;
 }
 
 export interface UpdateProjectPayload {
@@ -71,7 +69,7 @@ export const projectApi = baseApi.injectEndpoints({
             ProjectMember,
             AddProjectMemberInput
         >({
-            query: ({projectId, ...body }) => ({
+            query: ({ projectId, ...body }) => ({
                 url: `/projects/${projectId}/members`,
                 method: "POST",
                 body,

@@ -34,13 +34,7 @@ const NAV_ITEMS = [
         href: "/projects",
         icon: FolderKanban,
         exact: false,
-    },
-    {
-        label: "Settings",
-        href: "/settings",
-        icon: Settings,
-        exact: false,
-    },
+    }
 ];
 
 export function Sidebar() {

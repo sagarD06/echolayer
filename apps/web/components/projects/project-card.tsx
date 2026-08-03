@@ -83,13 +83,13 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="w-44">
                             <DropdownMenuItem asChild>
-                                <Link href={`/dashboard/projects/${project.id}/settings`}>
+                                <Link href={`/projects/${project.id}/settings`}>
                                     <Settings className="w-3.5 h-3.5 mr-2" />
                                     Settings
                                 </Link>
                             </DropdownMenuItem>
                             <DropdownMenuItem asChild>
-                                <Link href={`/dashboard/projects/${project.id}/widget`}>
+                                <Link href={`/projects/${project.id}/widget`}>
                                     <QrCode className="w-3.5 h-3.5 mr-2" />
                                     Widget & sharing
                                 </Link>

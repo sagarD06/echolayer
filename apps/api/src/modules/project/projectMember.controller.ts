@@ -16,7 +16,7 @@ export async function getProjectMembers(req: Request, res: Response, next: NextF
     try {
         const members = await projectMemberService.getAllProjectMembers(req.params.projectId as string, req.user!.organisationId);
 
-        res.status(200).json({ members });
+        res.status(200).json(members);
     } catch (error) {
         next(error);
     }

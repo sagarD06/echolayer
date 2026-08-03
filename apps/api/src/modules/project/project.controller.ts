@@ -16,7 +16,7 @@ export async function getProjects(req: Request, res: Response, next: NextFunctio
     try {
         const projects = await projectService.getProjects(req.user!.organisationId, req.user!.userId, req.user!.role);
 
-        res.status(200).json({ projects });
+        res.status(200).json(projects);
     } catch (error) {
         next(error);
     }

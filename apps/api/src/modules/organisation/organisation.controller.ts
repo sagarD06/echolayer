@@ -11,7 +11,7 @@ export async function getOrganisation(req: Request, res: Response, next: NextFun
         }
         const organisation = await organsiationService.getOrganisation(user.organisationId);
 
-        res.status(200).json({ organisation });
+        res.status(200).json(organisation);
 
     } catch (error) {
         next(error);
@@ -26,7 +26,7 @@ export async function getOrganisationMembers(req: Request, res: Response, next: 
         }
         const members = await organsiationService.getAllOrganisationMembers(user.organisationId);
 
-        res.status(200).json({ members });
+        res.status(200).json(members);
     } catch (error) {
         next(error);
     }

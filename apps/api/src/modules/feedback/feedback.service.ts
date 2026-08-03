@@ -3,8 +3,11 @@ import ExcelJS from "exceljs";
 import { FeedbackStatus, prisma } from "@echolayer/database";
 
 import { CreateFeedbackInput } from "@echolayer/schema";
+import { CacheDelete, Cachekeys } from "@echolayer/cache";
 
 import { AppError } from "../../utils/app-error";
+
+const STAT_DAY_VARIANTS = [7, 30, 90];
 
 export async function createFeedback(projectId: string, feedbackData: CreateFeedbackInput) {
     const project = await prisma.project.findUnique({
@@ -34,6 +37,11 @@ export async function createFeedback(projectId: string, feedbackData: CreateFeed
             createdAt: true,
         },
     })
+
+    await Promise.all([
+        ...STAT_DAY_VARIANTS.map((d) => CacheDelete(Cachekeys.orgStats(project.organisationId, d))),
+        ...STAT_DAY_VARIANTS.map((d) => CacheDelete(Cachekeys.projectStats(projectId, d))),
+    ]);
 
     return feedback;
 }
@@ -93,6 +101,11 @@ export async function updateFeedbackStatus(organisationId: string, feedbackId: s
         },
     });
 
+    await Promise.all([
+        ...STAT_DAY_VARIANTS.map((d) => CacheDelete(Cachekeys.orgStats(organisationId, d))),
+        ...STAT_DAY_VARIANTS.map((d) => CacheDelete(Cachekeys.projectStats(feedback.projectId, d))),
+    ]);
+
     return updatedFeedback;
 }
 
@@ -108,6 +121,11 @@ export async function deleteFeedback(feedbackId: string, organisationId: string)
     await prisma.feedback.delete({
         where: { id: feedbackId }
     });
+
+    await Promise.all([
+        ...STAT_DAY_VARIANTS.map((d) => CacheDelete(Cachekeys.orgStats(organisationId, d))),
+        ...STAT_DAY_VARIANTS.map((d) => CacheDelete(Cachekeys.projectStats(feedback.projectId, d))),
+    ]);
 
     return { message: "Feedback deleted successfully" };
 }

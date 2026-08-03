@@ -22,4 +22,4 @@ export const getProjectSchema = z.object({
 });
 
 export type CreateProjectInput = z.infer<typeof createProjectSchema>["body"];
-export type UpdateProjectInput = z.infer<typeof updateProjectSchema>["body"];
+export type UpdateProjectInput = z.infer<typeof updateProjectSchema>["body"] & { projectId: string };

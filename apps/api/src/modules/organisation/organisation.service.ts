@@ -30,7 +30,7 @@ export async function getOrganisation(organisationId: string) {
     })
 
     if (!organisationData) {
-        return new AppError("Organisation not found", 404);
+        throw new AppError("Organisation not found", 404);
     }
 
     await CacheSet(Cachekeys.org(organisationId), organisationData, TTL.ORG);
